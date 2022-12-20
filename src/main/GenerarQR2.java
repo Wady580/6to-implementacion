@@ -9,7 +9,7 @@ package main;
  *
  * @author 18432
  */
-public class Implementacion {
+public class GenerarQR2 {
 
     /**
      * @param args the command line arguments
