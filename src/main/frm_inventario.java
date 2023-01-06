@@ -29,7 +29,11 @@ public class frm_inventario extends javax.swing.JFrame {
     public frm_inventario() {
         initComponents();
         
-         this.productos = (DefaultTableModel) tbl_productos.getModel();
+        this.productos = (DefaultTableModel) tbl_productos.getModel();
+        Mostrardatos("");
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+       
     }
 
     /**
@@ -85,13 +89,13 @@ public class frm_inventario extends javax.swing.JFrame {
                         .addComponent(lbl_inventario, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txt_buscador, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btn_buscar)))))
-                .addContainerGap(315, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,7 +163,7 @@ public class frm_inventario extends javax.swing.JFrame {
 
     public final void Mostrardatos(String valor){
             //Funcion para llenar la jtable de Usuarios desde la BD
-            //Myconnection cc=new Myconnection();
+            MyConnection cc=new MyConnection();
             Connection cn=MyConnection.getConnection();
             RefrescarTabla();
             productos.addColumn("idproducto");
@@ -182,20 +186,25 @@ public class frm_inventario extends javax.swing.JFrame {
             sql="SELECT * FROM productos WHERE productos='"+valor+"'";
             } 
 
-            String []datos=new String [5];
+            String []datos=new String [8];
+            
             try{
             Statement st=cn.createStatement();
             ResultSet rs=st.executeQuery(sql);
             while(rs.next()){
+                
             datos[0]=rs.getString(1);
             datos[1]=rs.getString(2);
             datos[2]=rs.getString(3);
             datos[3]=rs.getString(4);
             datos[4]=rs.getString(5);
+            datos[5]=rs.getString(6);
+            datos[6]=rs.getString(7);
+            datos[7]=rs.getString(8);
+            
+            
            
             
-     
-
             productos.addRow(datos);
             }
             tbl_productos.setModel(productos);
