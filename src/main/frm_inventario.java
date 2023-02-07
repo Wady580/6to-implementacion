@@ -63,11 +63,28 @@ public class frm_inventario extends javax.swing.JFrame {
         tbl_productos = new javax.swing.JTable();
         txt_buscador = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        txt_nom = new javax.swing.JTextField();
+        txt_proveedor = new javax.swing.JTextField();
+        txt_stock = new javax.swing.JTextField();
+        txt_des = new javax.swing.JTextField();
+        txt_pre = new javax.swing.JTextField();
+        txt_codpr = new javax.swing.JTextField();
+        txt_tipo = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbl_inventario.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lbl_inventario.setText("Inventario");
+        getContentPane().add(lbl_inventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 144, -1));
 
         tbl_productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -80,7 +97,14 @@ public class frm_inventario extends javax.swing.JFrame {
 
             }
         ));
+        tbl_productos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_productosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_productos);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 100, 599, 247));
 
         txt_buscador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,6 +116,7 @@ public class frm_inventario extends javax.swing.JFrame {
                 txt_buscadorKeyPressed(evt);
             }
         });
+        getContentPane().add(txt_buscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 60, 232, -1));
 
         btn_buscar.setText("Buscar");
         btn_buscar.addActionListener(new java.awt.event.ActionListener() {
@@ -99,39 +124,39 @@ public class frm_inventario extends javax.swing.JFrame {
                 btn_buscarActionPerformed(evt);
             }
         });
+        getContentPane().add(btn_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(256, 59, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lbl_inventario, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txt_buscador, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_buscar)))))
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbl_inventario)
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_buscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_buscar))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(89, Short.MAX_VALUE))
-        );
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(txt_nom, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 40, 161, -1));
+        jPanel1.add(txt_proveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 86, 161, -1));
+        jPanel1.add(txt_stock, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 136, 161, -1));
+        jPanel1.add(txt_des, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 179, 161, -1));
+        jPanel1.add(txt_pre, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 40, 240, -1));
+        jPanel1.add(txt_codpr, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 86, 240, -1));
+        jPanel1.add(txt_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 136, 86, -1));
+
+        jLabel1.setText("Nombrepro:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 40, -1, -1));
+
+        jLabel2.setText("Proveedor:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 89, -1, -1));
+
+        jLabel3.setText("Stock:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 139, -1, -1));
+
+        jLabel4.setText("Descripcion:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 182, -1, -1));
+
+        jLabel5.setText("Precio:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 43, -1, -1));
+
+        jLabel6.setText("codigopro:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 89, -1, -1));
+
+        jLabel7.setText("tipoproducto:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 139, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 100, 640, 230));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -157,6 +182,37 @@ public class frm_inventario extends javax.swing.JFrame {
     private void txt_buscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_buscadorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_buscadorActionPerformed
+
+    private void tbl_productosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_productosMouseClicked
+        // TODO add your handling code here:
+                
+        try{
+  
+            String nom = (String)productos.getValueAt(tbl_productos.getSelectedRow(), 1);
+            String pro = (String)productos.getValueAt(tbl_productos.getSelectedRow(), 2);
+            String stock = (String)productos.getValueAt(tbl_productos.getSelectedRow(), 3);
+            String des = (String)productos.getValueAt(tbl_productos.getSelectedRow(),4);
+            String pre = (String)productos.getValueAt(tbl_productos.getSelectedRow(),5);
+            String cod = (String)productos.getValueAt(tbl_productos.getSelectedRow(),6);
+            String tipo = (String)productos.getValueAt(tbl_productos.getSelectedRow(),7);
+                 
+            
+                    
+            txt_nom.setText(nom);
+            txt_proveedor.setText(pro);
+            txt_stock.setText(stock);
+            txt_des.setText(des);
+            txt_pre.setText(pre);
+            txt_codpr.setText(cod);
+             txt_tipo.setText(tipo);
+           
+        }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(null,"error"+ex);
+        }
+      
+    
+    }//GEN-LAST:event_tbl_productosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -195,10 +251,25 @@ public class frm_inventario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_inventario;
     private javax.swing.JTable tbl_productos;
     private javax.swing.JTextField txt_buscador;
+    private javax.swing.JTextField txt_codpr;
+    private javax.swing.JTextField txt_des;
+    private javax.swing.JTextField txt_nom;
+    private javax.swing.JTextField txt_pre;
+    private javax.swing.JTextField txt_proveedor;
+    private javax.swing.JTextField txt_stock;
+    private javax.swing.JTextField txt_tipo;
     // End of variables declaration//GEN-END:variables
 
     public final void Mostrardatos(String valor){
