@@ -6,18 +6,100 @@
 package main;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import connection.conn;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author maxim
- */
 public class frm_insert_clients extends javax.swing.JFrame {
 
     /**
      *
      */
+    
+    DefaultTableModel Cliente;
+    
     public frm_insert_clients() {
         initComponents();
+        this.Cliente = (DefaultTableModel) tbl_cliente.getModel();
+        MostrarDatosCliente("","");
+    }
+
+    public void RefrescarTablaCliente() {
+        //Funcion encargada de Refrescar la tabla utilizando Revalidate
+        try {
+            Cliente.setColumnCount(0);
+            Cliente.setRowCount(0);
+            tbl_cliente.revalidate();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "error " + ex);
+        }
+    }
+    
+    public final void MostrarDatosCliente(String valor, String tipo) {
+        //Funcion para llenar la jtable de Usuarios desde la BD
+        conn cc = new conn();
+        Connection cn = conn.getConnection();
+        RefrescarTablaCliente();
+        Cliente.addColumn("id_cliente");
+        Cliente.addColumn("nombre");
+        Cliente.addColumn("apellido"); 
+        Cliente.addColumn("tipo_cliente");
+        Cliente.addColumn("balance");
+
+        this.tbl_cliente.setModel(Cliente);
+
+            String sql = "SELECT * FROM clientes";
+
+        String[] datos = new String[4];
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);         
+
+                Cliente.addRow(datos);
+            }
+            tbl_cliente.setModel(Cliente);
+        } catch (SQLException ex) {
+            Logger.getLogger(frm_insert_clients.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "error " + ex);
+        }
+    }
+    
+    public boolean RevisarCliente(String nombre, int id_cli, String apellido) {
+        PreparedStatement ps;
+        ResultSet rs;
+        boolean checkCliente = false;
+        String query = "SELECT count(id_cliente) FROM clientes WHERE nombre = ? AND id_cliente <> ? AND apellido = ? ";
+
+        try {
+            ps = conn.getConnection().prepareStatement(query);
+            ps.setString(1, nombre);
+            ps.setInt(2, id_cli);
+            ps.setString(3, apellido);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                checkCliente = true;
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex);
+        }
+        return checkCliente;
+    }
+    
+    public void LimpiarCamposCliente() {
+        txt_id_cliente.setText("");
+        txt_nombre.setText("");
+        txt_apellido.setText("");
     }
 
     /**
@@ -29,74 +111,47 @@ public class frm_insert_clients extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bgk_panel = new javax.swing.JPanel();
-        frm_bkg_panel = new javax.swing.JPanel();
-        lbl_title = new javax.swing.JLabel();
-        txt_nombre = new javax.swing.JTextField();
-        btn_insert = new javax.swing.JButton();
-        txt_apellido = new javax.swing.JTextField();
-        txt_balance = new javax.swing.JTextField();
-        txt_tipo = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
         lbl_nombre = new javax.swing.JLabel();
         lbl_apellido = new javax.swing.JLabel();
-        lbl_balance = new javax.swing.JLabel();
         lbl_tipo = new javax.swing.JLabel();
-        cbb_tipo = new javax.swing.JComboBox<>();
+        lbl_title = new javax.swing.JLabel();
         btn_limpiar = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        btn_borrar = new javax.swing.JButton();
+        txt_nombre = new javax.swing.JTextField();
+        btn_insert = new javax.swing.JButton();
+        btn_editar = new javax.swing.JButton();
+        txt_apellido = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_cliente = new javax.swing.JTable();
+        txt_id_cliente = new javax.swing.JTextField();
+        lbl_balance1 = new javax.swing.JLabel();
+        cbb_tipo = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Insertar clientes");
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        bgk_panel.setBackground(new java.awt.Color(10, 103, 193));
-        bgk_panel.setMaximumSize(new java.awt.Dimension(1600, 900));
-
-        frm_bkg_panel.setBackground(new java.awt.Color(255, 255, 255));
-        frm_bkg_panel.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        frm_bkg_panel.setMaximumSize(new java.awt.Dimension(1500, 800));
-        frm_bkg_panel.setMinimumSize(new java.awt.Dimension(1500, 800));
-        frm_bkg_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lbl_title.setFont(new java.awt.Font("Calibri Light", 0, 48)); // NOI18N
-        lbl_title.setText("Insertar Clientes");
-        frm_bkg_panel.add(lbl_title, new org.netbeans.lib.awtextra.AbsoluteConstraints(585, 45, -1, 87));
-
-        txt_nombre.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        frm_bkg_panel.add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 240, 510, 40));
-
-        btn_insert.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        btn_insert.setText("Insertar");
-        frm_bkg_panel.add(btn_insert, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 675, 240, 45));
-
-        txt_apellido.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        frm_bkg_panel.add(txt_apellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 345, 510, 40));
-
-        txt_balance.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        frm_bkg_panel.add(txt_balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 450, 510, 40));
-
-        txt_tipo.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        frm_bkg_panel.add(txt_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 555, 240, 40));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbl_nombre.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         lbl_nombre.setText("Nombre");
-        frm_bkg_panel.add(lbl_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(405, 240, -1, -1));
+        jPanel1.add(lbl_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
 
         lbl_apellido.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         lbl_apellido.setText("Apellido");
-        frm_bkg_panel.add(lbl_apellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(405, 345, -1, -1));
-
-        lbl_balance.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        lbl_balance.setText("Balance");
-        frm_bkg_panel.add(lbl_balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(405, 450, -1, -1));
+        jPanel1.add(lbl_apellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(795, 180, -1, -1));
 
         lbl_tipo.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         lbl_tipo.setText("Tipo de cliente");
-        frm_bkg_panel.add(lbl_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(345, 555, -1, -1));
+        jPanel1.add(lbl_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, -1, -1));
 
-        cbb_tipo.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
-        cbb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Docente", "Otro..." }));
-        frm_bkg_panel.add(cbb_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(765, 555, 240, 45));
+        lbl_title.setFont(new java.awt.Font("Calibri Light", 0, 48)); // NOI18N
+        lbl_title.setText("Formulario de Clientes");
+        jPanel1.add(lbl_title, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 15, -1, 87));
 
         btn_limpiar.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
         btn_limpiar.setText("Limpiar");
@@ -105,72 +160,203 @@ public class frm_insert_clients extends javax.swing.JFrame {
                 btn_limpiarActionPerformed(evt);
             }
         });
-        frm_bkg_panel.add(btn_limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(765, 675, 240, 45));
+        jPanel1.add(btn_limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 705, 240, 45));
 
-        jPanel1.setBackground(new java.awt.Color(232, 122, 20));
+        btn_borrar.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        btn_borrar.setText("Eliminar");
+        btn_borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_borrarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_borrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(375, 705, 240, 45));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 809, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-        );
+        txt_nombre.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        jPanel1.add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 405, 40));
 
-        javax.swing.GroupLayout bgk_panelLayout = new javax.swing.GroupLayout(bgk_panel);
-        bgk_panel.setLayout(bgk_panelLayout);
-        bgk_panelLayout.setHorizontalGroup(
-            bgk_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgk_panelLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(frm_bkg_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 1500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
-            .addGroup(bgk_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgk_panelLayout.createSequentialGroup()
-                    .addGap(0, 791, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-        bgk_panelLayout.setVerticalGroup(
-            bgk_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgk_panelLayout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(frm_bkg_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
-            .addGroup(bgk_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        btn_insert.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        btn_insert.setText("Insertar");
+        btn_insert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_insertActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_insert, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 705, 240, 45));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bgk_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bgk_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        btn_editar.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        btn_editar.setText("Editar");
+        btn_editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 705, 240, 45));
+
+        txt_apellido.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        jPanel1.add(txt_apellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 180, 420, 40));
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
+        tbl_cliente.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        tbl_cliente.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        tbl_cliente.setGridColor(new java.awt.Color(232, 122, 19));
+        tbl_cliente.setSelectionBackground(new java.awt.Color(10, 103, 193));
+        tbl_cliente.setShowVerticalLines(false);
+        tbl_cliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_clienteMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_cliente);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, 1140, 315));
+
+        txt_id_cliente.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        jPanel1.add(txt_id_cliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 120, 120, 40));
+
+        lbl_balance1.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        lbl_balance1.setText("ID");
+        jPanel1.add(lbl_balance1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, -1, -1));
+
+        cbb_tipo.setFont(new java.awt.Font("Calibri Light", 0, 24)); // NOI18N
+        cbb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Profesor", "Otro" }));
+        jPanel1.add(cbb_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, 405, 45));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 135, 1500, 810));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bkg.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
+        // TODO add your handling code here:
+        String id = txt_id_cliente.getText();
+        String nom = txt_nombre.getText();
+        String ape = txt_apellido.getText();
+        String tipo = cbb_tipo.getItemAt(cbb_tipo.getSelectedIndex());
+        if (id.isEmpty() || nom.isEmpty() || ape.isEmpty() || tipo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Error, verifique que ningún campo esté vacío.");
+        } else {
+            int id_ = Integer.parseInt(id);
+                PreparedStatement ps;
+                String query = "UPDATE clientes SET nombre=?, apellido=?, tipo_cliente=? WHERE id_cliente=?";
+            try {
+                ps = conn.getConnection().prepareStatement(query);
+                ps.setString(4, id);
+                ps.setString(1, nom);
+                ps.setString(2, ape);
+                ps.setString(3, tipo);
+                ps.executeUpdate();
+                LimpiarCamposCliente();
+                MostrarDatosCliente("", "");
+            } catch (SQLException ex) {
+                Logger.getLogger(frm_insert_clients.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "error " + ex);
+            }
+        }
+    }//GEN-LAST:event_btn_editarActionPerformed
+
+    private void btn_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_borrarActionPerformed
+        if(tbl_cliente.getSelectedRow()>=0 ){
+            try {
+                PreparedStatement ps;
+                String query = "DELETE FROM `clientes` WHERE id_cliente=?";
+                try {
+                    ps = conn.getConnection().prepareStatement(query);
+                    int id = Integer.parseInt((String) Cliente.getValueAt(tbl_cliente.getSelectedRow(), 0));
+                    ps.setInt(1,id);
+                    if (ps.executeUpdate() > 0) {
+                        JOptionPane.showMessageDialog(null, "Cliente Eliminado");
+                        LimpiarCamposCliente();
+                        MostrarDatosCliente("", "");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(frm_insert_clients.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "error " + ex);
+                }
+            } catch(NumberFormatException ex) {
+                Logger.getLogger(frm_insert_clients.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "error " + ex);
+            }
+        }
+    }//GEN-LAST:event_btn_borrarActionPerformed
+
     private void btn_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limpiarActionPerformed
         // TODO add your handling code here:
-        String name = txt_nombre.getText();
-        String sname = txt_apellido.getText();
-        String balance = txt_balance.getText();
-        String tipo = txt_tipo.getText();
-        String c_tipo = cbb_tipo.getItemAt(cbb_tipo.getSelectedIndex());
-
-        ver_limpiar mf = new ver_limpiar();
-        mf.setVisible(true);
-        mf.pack();
-        mf.setLocationRelativeTo(null);
+        LimpiarCamposCliente();
     }//GEN-LAST:event_btn_limpiarActionPerformed
 
+    private void btn_insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insertActionPerformed
+        String nom = txt_nombre.getText();
+        String ape = txt_apellido.getText();
+        String tipo = cbb_tipo.getItemAt(cbb_tipo.getSelectedIndex());
+
+        if (nom.equals("") || ape.equals("") || tipo.equals("")) {
+            JOptionPane.showMessageDialog(this, "Error, verifique que todos los campos estén llenos");
+        } else {
+            PreparedStatement ps;
+            String query = "INSERT INTO `clientes` VALUES (0,?,?,?,0)";
+            try {
+                ps = conn.getConnection().prepareStatement(query);
+                ps.setString(1, nom);
+                ps.setString(2, ape);
+                ps.setString(3, tipo);
+                if (ps.executeUpdate() > 0) {
+                    LimpiarCamposCliente();
+                    MostrarDatosCliente("","");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(frm_insert_clients.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "error " + ex);
+            }
+        }
+    }//GEN-LAST:event_btn_insertActionPerformed
+
+    private void tbl_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_clienteMouseClicked
+        // TODO add your handling code here:
+        try {
+            String id = (String) Cliente.getValueAt(tbl_cliente.getSelectedRow(), 0);
+            String nom = (String) Cliente.getValueAt(tbl_cliente.getSelectedRow(), 1);
+            String ape = (String) Cliente.getValueAt(tbl_cliente.getSelectedRow(), 2);
+            txt_id_cliente.setText(id);
+            txt_nombre.setText(nom);
+            txt_apellido.setText(ape);
+            String tipo = (Cliente.getValueAt(tbl_cliente.getSelectedRow(), 3).toString());
+            int tipo_c = 0;
+            switch (tipo) {
+                case "Estudiante":
+                    tipo_c = 0;
+                    break;
+                case "Profesor":
+                    tipo_c = 1;
+                    break;
+                case "Otro":
+                    tipo_c = 2;
+                    break;
+                default:
+                    break;
+            }
+            cbb_tipo.setSelectedIndex(tipo_c);
+            
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "error" + ex);
+        }
+    }//GEN-LAST:event_tbl_clienteMouseClicked
+
+    
+   
     /**
      * @param args the command line arguments
      */
@@ -207,20 +393,22 @@ public class frm_insert_clients extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel bgk_panel;
+    private javax.swing.JButton btn_borrar;
+    private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_insert;
     public javax.swing.JButton btn_limpiar;
-    public static javax.swing.JComboBox<String> cbb_tipo;
-    public static javax.swing.JPanel frm_bkg_panel;
+    private javax.swing.JComboBox<String> cbb_tipo;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_apellido;
-    private javax.swing.JLabel lbl_balance;
+    private javax.swing.JLabel lbl_balance1;
     private javax.swing.JLabel lbl_nombre;
     private javax.swing.JLabel lbl_tipo;
     private javax.swing.JLabel lbl_title;
+    private javax.swing.JTable tbl_cliente;
     public static javax.swing.JTextField txt_apellido;
-    public static javax.swing.JTextField txt_balance;
+    public static javax.swing.JTextField txt_id_cliente;
     public static javax.swing.JTextField txt_nombre;
-    public static javax.swing.JTextField txt_tipo;
     // End of variables declaration//GEN-END:variables
 }
