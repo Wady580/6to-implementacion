@@ -5,9 +5,10 @@
  */
 package main;
 
-import connection.Myconnection;
+import connection.MyConnection;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,6 +49,16 @@ public class frm_inventario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "error "+ex);
         }
     }
+    
+    public void Limpiar(){
+        txt_nom_produc.setText("");
+        txt_prov_produc.setText("");
+        txt_stock_produc.setText("");
+        txt_desc_produc.setText("");
+        txt_prec_produc.setText("");
+        txt_cod_produc.setText("");
+        txt_tipo_produc.setText("");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,19 +69,20 @@ public class frm_inventario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lbl_inventario = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_productos = new javax.swing.JTable();
+        lbl_inventario = new javax.swing.JLabel();
         txt_buscador = new javax.swing.JTextField();
-        btn_buscar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        txt_nom = new javax.swing.JTextField();
-        txt_proveedor = new javax.swing.JTextField();
-        txt_stock = new javax.swing.JTextField();
-        txt_des = new javax.swing.JTextField();
-        txt_pre = new javax.swing.JTextField();
-        txt_codpr = new javax.swing.JTextField();
-        txt_tipo = new javax.swing.JTextField();
+        txt_nom_produc = new javax.swing.JTextField();
+        txt_prov_produc = new javax.swing.JTextField();
+        txt_stock_produc = new javax.swing.JTextField();
+        txt_desc_produc = new javax.swing.JTextField();
+        txt_prec_produc = new javax.swing.JTextField();
+        txt_cod_produc = new javax.swing.JTextField();
+        txt_tipo_produc = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -78,13 +90,16 @@ public class frm_inventario extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
+        btn_modificar = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lbl_inventario.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        lbl_inventario.setText("Inventario");
-        getContentPane().add(lbl_inventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 144, -1));
+        jPanel3.setBackground(new java.awt.Color(251, 120, 0));
+        jPanel3.setLayout(null);
 
         tbl_productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -104,7 +119,8 @@ public class frm_inventario extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_productos);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 100, 599, 247));
+        lbl_inventario.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lbl_inventario.setText("Inventario");
 
         txt_buscador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,67 +132,126 @@ public class frm_inventario extends javax.swing.JFrame {
                 txt_buscadorKeyPressed(evt);
             }
         });
-        getContentPane().add(txt_buscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 60, 232, -1));
-
-        btn_buscar.setText("Buscar");
-        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_buscarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btn_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(256, 59, -1, -1));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(txt_nom, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 40, 161, -1));
-        jPanel1.add(txt_proveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 86, 161, -1));
-        jPanel1.add(txt_stock, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 136, 161, -1));
-        jPanel1.add(txt_des, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 179, 161, -1));
-        jPanel1.add(txt_pre, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 40, 240, -1));
-        jPanel1.add(txt_codpr, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 86, 240, -1));
-        jPanel1.add(txt_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 136, 86, -1));
 
-        jLabel1.setText("Nombrepro:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 40, -1, -1));
+        txt_nom_produc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_nom_producActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txt_nom_produc, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 40, 161, -1));
+        jPanel1.add(txt_prov_produc, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 86, 161, -1));
+        jPanel1.add(txt_stock_produc, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 136, 161, -1));
+        jPanel1.add(txt_desc_produc, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 179, 161, -1));
+        jPanel1.add(txt_prec_produc, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 40, 170, -1));
+
+        txt_cod_produc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_cod_producActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txt_cod_produc, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 86, 170, -1));
+        jPanel1.add(txt_tipo_produc, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, 170, -1));
+
+        jLabel1.setText("Nombre: ");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         jLabel2.setText("Proveedor:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 89, -1, -1));
 
         jLabel3.setText("Stock:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 139, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
 
-        jLabel4.setText("Descripcion:");
+        jLabel4.setText("Descripción:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 182, -1, -1));
 
         jLabel5.setText("Precio:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 43, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 40, -1, -1));
 
-        jLabel6.setText("codigopro:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 89, -1, -1));
+        jLabel6.setText("Código:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, -1, -1));
 
-        jLabel7.setText("tipoproducto:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 139, -1, -1));
+        jLabel7.setText("Tipo:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 100, 640, 230));
+        jButton1.setText("+");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
+
+        btn_eliminar.setText("-");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, -1, -1));
+
+        btn_modificar.setText("Modificar");
+        btn_modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, -1, -1));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_inventario, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txt_buscador, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lbl_inventario)
+                .addGap(8, 8, 8)
+                .addComponent(txt_buscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)))
+        );
+
+        jPanel3.add(jPanel2);
+        jPanel2.setBounds(50, 50, 1228, 407);
+
+        jPanel4.setBackground(new java.awt.Color(0, 99, 213));
+        jPanel4.setLayout(null);
+        jPanel3.add(jPanel4);
+        jPanel4.setBounds(0, 0, 610, 570);
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1330, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_buscarActionPerformed
-
     private void txt_buscadorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscadorKeyPressed
         // TODO add your handling code here:
-          try {
+        try {
             if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        String B = txt_buscador.getText()+"";
-        Mostrardatos(B);
+                String B = txt_buscador.getText()+"";
+                Mostrardatos(B);
             }
         }
         catch (Exception ex){
-        JOptionPane.showMessageDialog(null, "error "+ex);
-        
-    }    
+            JOptionPane.showMessageDialog(null, "error "+ex);
+
+        }
     }//GEN-LAST:event_txt_buscadorKeyPressed
 
     private void txt_buscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_buscadorActionPerformed
@@ -185,9 +260,9 @@ public class frm_inventario extends javax.swing.JFrame {
 
     private void tbl_productosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_productosMouseClicked
         // TODO add your handling code here:
-                
+
         try{
-  
+
             String nom = (String)productos.getValueAt(tbl_productos.getSelectedRow(), 1);
             String pro = (String)productos.getValueAt(tbl_productos.getSelectedRow(), 2);
             String stock = (String)productos.getValueAt(tbl_productos.getSelectedRow(), 3);
@@ -195,24 +270,154 @@ public class frm_inventario extends javax.swing.JFrame {
             String pre = (String)productos.getValueAt(tbl_productos.getSelectedRow(),5);
             String cod = (String)productos.getValueAt(tbl_productos.getSelectedRow(),6);
             String tipo = (String)productos.getValueAt(tbl_productos.getSelectedRow(),7);
-                 
-            
-                    
-            txt_nom.setText(nom);
-            txt_proveedor.setText(pro);
-            txt_stock.setText(stock);
-            txt_des.setText(des);
-            txt_pre.setText(pre);
-            txt_codpr.setText(cod);
-             txt_tipo.setText(tipo);
-           
+
+            txt_nom_produc.setText(nom);
+            txt_prov_produc.setText(pro);
+            txt_stock_produc.setText(stock);
+            txt_desc_produc.setText(des);
+            txt_prec_produc.setText(pre);
+            txt_cod_produc.setText(cod);
+            txt_tipo_produc.setText(tipo);
+
         }
         catch (Exception ex){
             JOptionPane.showMessageDialog(null,"error"+ex);
         }
-      
-    
+
     }//GEN-LAST:event_tbl_productosMouseClicked
+
+    private void txt_cod_producActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cod_producActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_cod_producActionPerformed
+
+    private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
+        // TODO add your handling code here:
+        //Declaración de variables y sus respectivos campos
+        String id_produc = (String)productos.getValueAt(tbl_productos.getSelectedRow(),0);
+        String nom_produc = txt_nom_produc.getText();
+        String prov_produc = txt_prov_produc.getText();
+        String stock_produc = txt_stock_produc.getText();
+        String desc_produc = txt_desc_produc.getText();
+        String prec_produc = txt_prec_produc.getText();
+        String cod_produc  = txt_cod_produc.getText();
+        String tipo_produc = txt_tipo_produc.getText();
+        
+        
+        //Declaración de consulta
+        PreparedStatement ps;
+        
+        //Creación de sentencia SQL para actualizar un registro dado un código de medicamento
+        String query = "UPDATE productos SET nombre=?, proveedor=?, stock=?, descripcion=?, precio=?, codigopro=?, tipoproducto=? WHERE idproductos=?";
+        try {
+            ps = MyConnection.getConnection().prepareStatement(query);
+
+            ps.setString(8, id_produc);
+            ps.setString(1, nom_produc);
+            ps.setString(2, prov_produc);
+            ps.setString(3, stock_produc);
+            ps.setString(4, desc_produc);
+            ps.setString(5, prec_produc);
+            ps.setString(6, cod_produc);
+            ps.setString(7, tipo_produc);
+
+            ps.executeUpdate();
+            //Mensaje que valida la actualización del registro
+            JOptionPane.showMessageDialog(null, "Producto Modificado");
+            Limpiar();
+            Mostrardatos("");
+            
+        //Mensaje de error
+        } catch (SQLException ex) {
+            Logger.getLogger(frm_inventario.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "error "+ex);
+        }
+    }//GEN-LAST:event_btn_modificarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         //Declaración de variables y sus respectivos campos
+        String nom_produc = txt_nom_produc.getText();
+        String prov_produc = txt_prov_produc.getText();
+        String stock_produc = txt_stock_produc.getText();
+        String desc_produc = txt_desc_produc.getText();
+        String prec_produc = txt_prec_produc.getText();
+        String cod_produc = txt_cod_produc.getText();
+        String tipo_produc = txt_tipo_produc.getText();
+        
+        //Condicional IF para confirmar que no hayan campos vacíos
+        if( nom_produc.isEmpty() || prov_produc.isEmpty() || stock_produc.isEmpty() || desc_produc.isEmpty() || prec_produc.isEmpty() || cod_produc.isEmpty() || tipo_produc.isEmpty()){
+
+            JOptionPane.showMessageDialog(null, "Por favor, llene todos los campos","error", 2);
+
+        }else{
+            
+            //Declaración de consulta
+            PreparedStatement ps;
+            
+            //Creación de sentencia SQL para insertar los registros
+            String query = "INSERT INTO `productos`(`nombre`, `proveedor`, `stock`, `descripcion`, `precio`, `codigopro`, `tipoproducto`) VALUES (?,?,?,?,?,?,?)";
+            try {
+                ps = MyConnection.getConnection().prepareStatement(query);
+
+                ps.setString(1, nom_produc);
+                ps.setString(2, prov_produc);
+                ps.setString(3, stock_produc);
+                ps.setString(4, desc_produc);
+                ps.setString(5, prec_produc);
+                ps.setString(6, cod_produc);
+                ps.setString(7, tipo_produc);
+                
+                //Condicional IF para validar la inserción de un producto
+                if(ps.executeUpdate() > 0)
+                {
+                    JOptionPane.showMessageDialog(null, "Producto Agregado Exitosamente!");
+                    Mostrardatos("");
+                    Limpiar();
+                }
+            
+            //Mensaje de error
+            } catch (SQLException ex) {
+                Logger.getLogger(frm_inventario.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "error "+ex);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txt_nom_producActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nom_producActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_nom_producActionPerformed
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        // TODO add your handling code here:
+        
+         //Declaración de variable para eliminar el producto seleccionado
+        String id_producto = (String) productos.getValueAt(tbl_productos.getSelectedRow(),0);
+        
+        //Declaración de consulta
+        PreparedStatement ps;
+        
+        //Creación de sentencia SQL para eliminar el producto
+        String query = "DELETE FROM productos WHERE idproductos=?";
+        try {
+            ps = MyConnection.getConnection().prepareStatement(query);
+
+            ps.setString(1, id_producto);
+            
+            //Condicional IF que valida la eliminación del registro
+            if(ps.executeUpdate() > 0)
+            {
+
+                JOptionPane.showMessageDialog(null, "Medicamento Eliminado");
+                Limpiar();
+                Mostrardatos("");
+            }
+        
+        //Mensaje de error
+        } catch (SQLException ex) {
+            Logger.getLogger(frm_inventario.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "error "+ex);
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,7 +455,9 @@ public class frm_inventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_buscar;
+    private javax.swing.JButton btn_eliminar;
+    private javax.swing.JButton btn_modificar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -259,23 +466,26 @@ public class frm_inventario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_inventario;
     private javax.swing.JTable tbl_productos;
     private javax.swing.JTextField txt_buscador;
-    private javax.swing.JTextField txt_codpr;
-    private javax.swing.JTextField txt_des;
-    private javax.swing.JTextField txt_nom;
-    private javax.swing.JTextField txt_pre;
-    private javax.swing.JTextField txt_proveedor;
-    private javax.swing.JTextField txt_stock;
-    private javax.swing.JTextField txt_tipo;
+    private javax.swing.JTextField txt_cod_produc;
+    private javax.swing.JTextField txt_desc_produc;
+    private javax.swing.JTextField txt_nom_produc;
+    private javax.swing.JTextField txt_prec_produc;
+    private javax.swing.JTextField txt_prov_produc;
+    private javax.swing.JTextField txt_stock_produc;
+    private javax.swing.JTextField txt_tipo_produc;
     // End of variables declaration//GEN-END:variables
 
     public final void Mostrardatos(String valor){
             //Funcion para llenar la jtable de Usuarios desde la BD
-            Myconnection cc=new Myconnection();
-            Connection cn=Myconnection.getConnection();
+            MyConnection cc=new MyConnection();
+            Connection cn=MyConnection.getConnection();
             RefrescarTabla();
             productos.addColumn("idproducto");
             productos.addColumn("nombre");
